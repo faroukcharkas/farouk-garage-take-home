@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { InvoicePreview } from "@/app/[listingId]/invoice-preview"
 import { InvoiceData } from "@/lib/types"
+import Link from "next/link"
 
 const FormSchema = z.object({
     name: z.string().min(1, "Please enter your name"),
@@ -60,18 +61,18 @@ export default function NameForm({ invoiceData }: NameFormProps) {
 
     return (
         <>
-            <h1 className="text-4xl tracking-tighter mb-8">Enter Your Name</h1>
+            <h1 className="text-4xl tracking-tighter mb-8">Who should we bill to?</h1>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-[400px] space-y-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-md space-y-6">
                     <FormField
                         control={form.control}
                         name="name"
                         render={({ field }: { field: ControllerRenderProps<FormValues, "name"> }) => (
                             <FormItem>
-                                <FormLabel>Your Name</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder="Enter your name"
+                                        placeholder="Enter name"
                                         {...field}
                                     />
                                 </FormControl>
@@ -80,8 +81,17 @@ export default function NameForm({ invoiceData }: NameFormProps) {
                         )}
                     />
                     <Button type="submit" className="w-full">Submit</Button>
+                    <div className="w-full max-w-md bg-muted p-4 rounded-lg flex items-center gap-2 mt-4">
+                        <p className="text-sm text-muted-foreground">
+                            This invoice is for{" "}
+                            <span className="font-bold">{invoiceData.listingTitle}</span>.{" "}
+                            <Link href={"/"} className="text-primary underline inline">
+                                Change
+                            </Link>
+                        </p>
+                    </div>
                 </form>
-            </Form>
+            </Form >
         </>
     )
 }
